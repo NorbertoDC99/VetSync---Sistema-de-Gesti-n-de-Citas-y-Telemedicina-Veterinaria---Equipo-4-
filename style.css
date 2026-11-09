@@ -40,11 +40,23 @@ h2 { margin-bottom: 20px; font-size: 1.2rem; color: var(--color-acento-hover); }
 
 label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: bold; }
 
-input[type="text"] {
+/* Estilos aplicados tanto a text como a date */
+input[type="text"], input[type="date"] {
     width: 100%; padding: 10px; border: 1px solid var(--color-borde);
     border-radius: 8px; background-color: var(--fondo-sitio); outline: none;
+    color: var(--color-texto); font-family: inherit;
 }
-input[type="text"]:focus { border-color: var(--color-acento); }
+input[type="text"]:focus, input[type="date"]:focus { border-color: var(--color-acento); }
+
+/* Mejora visual para el ícono del calendario en el input date */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
 
 .grupo-tiempo { display: flex; gap: 10px; }
 .grupo-tiempo select {

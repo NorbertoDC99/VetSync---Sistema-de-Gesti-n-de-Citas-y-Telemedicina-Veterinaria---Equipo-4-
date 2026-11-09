@@ -33,12 +33,14 @@
                 </div>
                 <div class="fila-inputs">
                     <div class="grupo-input">
-                        <label for="fecha">Fecha (DD/MM/AAAA):</label>
-                        <input type="text" id="fecha" maxlength="10" required placeholder="DD/MM/AAAA">
+                        <!-- Regresa type="date" para el calendario nativo -->
+                        <label for="fecha">Fecha:</label>
+                        <input type="date" id="fecha" required>
                     </div>
                     <div class="grupo-input">
                         <label>Hora:</label>
                         <div class="grupo-tiempo">
+                            <!-- type="text" con longitud máxima de 5 para el formato HH:MM -->
                             <input type="text" id="hora" required placeholder="HH:MM" maxlength="5">
                             <select id="ampm">
                                 <option value="AM">AM</option>
@@ -107,8 +109,8 @@
                 </div>
                 <div class="fila-inputs">
                     <div class="grupo-input">
-                        <label for="edit-fecha">Fecha (DD/MM/AAAA):</label>
-                        <input type="text" id="edit-fecha" maxlength="10" required>
+                        <label for="edit-fecha">Fecha:</label>
+                        <input type="date" id="edit-fecha" required>
                     </div>
                     <div class="grupo-input">
                         <label>Hora:</label>
