@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-width, initial-scale=1.0">
     <title>Sistema de Gestión de Citas y Telemedicina</title>
-    <!-- Hoja de estilos externa -->
     <link rel="stylesheet" href="style.css">
-    <!-- Librería para exportar a Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
@@ -23,18 +21,30 @@
                     <label for="mascota">Nombre de la Mascota:</label>
                     <input type="text" id="mascota" required placeholder="Ej. Firulais">
                 </div>
-                <div class="grupo-input">
-                    <label for="dueno">Nombre del Dueño:</label>
-                    <input type="text" id="dueno" required placeholder="Ej. Juan Pérez">
+                <div class="fila-inputs">
+                    <div class="grupo-input">
+                        <label for="dueno">Nombre del Dueño:</label>
+                        <input type="text" id="dueno" required placeholder="Ej. Juan Pérez">
+                    </div>
+                    <div class="grupo-input">
+                        <label for="telefono">Teléfono de Contacto:</label>
+                        <input type="text" id="telefono" required placeholder="Ej. 662 123 4567">
+                    </div>
                 </div>
                 <div class="fila-inputs">
                     <div class="grupo-input">
-                        <label for="fecha">Fecha:</label>
-                        <input type="date" id="fecha" required>
+                        <label for="fecha">Fecha (DD/MM/AAAA):</label>
+                        <input type="text" id="fecha" maxlength="10" required placeholder="DD/MM/AAAA">
                     </div>
                     <div class="grupo-input">
-                        <label for="hora">Hora:</label>
-                        <input type="time" id="hora" required>
+                        <label>Hora:</label>
+                        <div class="grupo-tiempo">
+                            <input type="text" id="hora" required placeholder="HH:MM" maxlength="5">
+                            <select id="ampm">
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="grupo-input">
@@ -59,22 +69,87 @@
                     <thead>
                         <tr>
                             <th>Mascota</th>
-                            <th>Dueño</th>
+                            <th>Dueño / Tel</th>
                             <th>Fecha</th>
                             <th>Hora</th>
                             <th>Motivo</th>
                             <th>Modalidad</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="cuerpo-tabla">
-                        <!-- Las citas se inyectarán aquí mediante JS -->
+                        <!-- Citas generadas por JS -->
                     </tbody>
                 </table>
             </div>
         </section>
     </div>
 
-    <!-- Archivo JS externo -->
+    <!-- Modal Editar -->
+    <div id="modal-editar" class="modal-overlay">
+        <div class="modal-contenido tarjeta-formulario">
+            <h2>Editar Cita</h2>
+            <form id="formulario-editar">
+                <input type="hidden" id="edit-id">
+                <div class="grupo-input">
+                    <label for="edit-mascota">Mascota:</label>
+                    <input type="text" id="edit-mascota" required>
+                </div>
+                <div class="fila-inputs">
+                    <div class="grupo-input">
+                        <label for="edit-dueno">Dueño:</label>
+                        <input type="text" id="edit-dueno" required>
+                    </div>
+                    <div class="grupo-input">
+                        <label for="edit-telefono">Teléfono:</label>
+                        <input type="text" id="edit-telefono" required>
+                    </div>
+                </div>
+                <div class="fila-inputs">
+                    <div class="grupo-input">
+                        <label for="edit-fecha">Fecha (DD/MM/AAAA):</label>
+                        <input type="text" id="edit-fecha" maxlength="10" required>
+                    </div>
+                    <div class="grupo-input">
+                        <label>Hora:</label>
+                        <div class="grupo-tiempo">
+                            <input type="text" id="edit-hora" required maxlength="5">
+                            <select id="edit-ampm">
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="grupo-input">
+                    <label for="edit-motivo">Motivo:</label>
+                    <input type="text" id="edit-motivo" required>
+                </div>
+                <div class="grupo-input checkbox-container">
+                    <input type="checkbox" id="edit-telemedicina">
+                    <label for="edit-telemedicina">Telemedicina</label>
+                </div>
+                <div class="fila-inputs">
+                    <button type="submit" class="btn-principal">Actualizar</button>
+                    <button type="button" class="btn-secundario" onclick="cerrarModal('modal-editar')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Confirmar Borrado -->
+    <div id="modal-borrar" class="modal-overlay">
+        <div class="modal-contenido tarjeta-formulario" style="max-width: 400px; text-align: center;">
+            <h2>¿Eliminar Cita?</h2>
+            <p>Esta acción no se puede deshacer.</p>
+            <input type="hidden" id="delete-id">
+            <div class="fila-inputs" style="margin-top: 20px;">
+                <button type="button" class="btn-borrar-fijo" id="btn-confirmar-borrar">Sí, eliminar</button>
+                <button type="button" class="btn-secundario" onclick="cerrarModal('modal-borrar')">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

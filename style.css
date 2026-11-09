@@ -1,4 +1,3 @@
-/* Variables de color (Tonos crema y beige claro) */
 :root {
     --fondo-sitio: #FDFBF7;
     --fondo-tarjeta: #F5EFE6;
@@ -6,14 +5,12 @@
     --color-borde: #E3D9C6;
     --color-acento: #C4AD88;
     --color-acento-hover: #A8916C;
+    --color-editar: #6FA3B4;
+    --color-borrar: #D47B7B;
     --blanco: #FFFFFF;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -22,22 +19,10 @@ body {
     padding: 20px;
 }
 
-.contenedor-principal {
-    max-width: 900px;
-    margin: 0 auto;
-}
+.contenedor-principal { max-width: 1000px; margin: 0 auto; }
+header { text-align: center; margin-bottom: 30px; }
+header h1 { color: var(--color-acento-hover); margin-bottom: 5px; }
 
-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-header h1 {
-    color: var(--color-acento-hover);
-    margin-bottom: 5px;
-}
-
-/* Tarjetas redondeadas */
 .tarjeta-formulario, .tarjeta-tabla {
     background-color: var(--blanco);
     border: 1px solid var(--color-borde);
@@ -47,144 +32,69 @@ header h1 {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
 
-h2 {
-    margin-bottom: 20px;
-    font-size: 1.2rem;
-    color: var(--color-acento-hover);
+h2 { margin-bottom: 20px; font-size: 1.2rem; color: var(--color-acento-hover); }
+
+.grupo-input { margin-bottom: 15px; }
+.fila-inputs { display: flex; gap: 15px; }
+.fila-inputs .grupo-input, .fila-inputs button { flex: 1; }
+
+label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: bold; }
+
+input[type="text"] {
+    width: 100%; padding: 10px; border: 1px solid var(--color-borde);
+    border-radius: 8px; background-color: var(--fondo-sitio); outline: none;
+}
+input[type="text"]:focus { border-color: var(--color-acento); }
+
+.grupo-tiempo { display: flex; gap: 10px; }
+.grupo-tiempo select {
+    padding: 10px; border: 1px solid var(--color-borde);
+    border-radius: 8px; background-color: var(--fondo-sitio); outline: none;
 }
 
-/* Formulario */
-.grupo-input {
-    margin-bottom: 15px;
-}
+.checkbox-container { display: flex; align-items: center; gap: 8px; }
+.checkbox-container label { margin-bottom: 0; }
 
-.fila-inputs {
-    display: flex;
-    gap: 15px;
-}
-
-.fila-inputs .grupo-input {
-    flex: 1;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 0.9rem;
-    font-weight: bold;
-}
-
-input[type="text"], input[type="date"], input[type="time"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--color-borde);
-    border-radius: 8px; /* Inputs redondeados */
-    background-color: var(--fondo-sitio);
-    outline: none;
-}
-
-input[type="text"]:focus, input[type="date"]:focus, input[type="time"]:focus {
-    border-color: var(--color-acento);
-}
-
-.checkbox-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.checkbox-container label {
-    margin-bottom: 0;
-}
-
-/* Botones redondeados */
 button {
-    cursor: pointer;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 25px; /* Botones muy redondeados */
-    font-weight: bold;
-    transition: background-color 0.3s;
+    cursor: pointer; border: none; padding: 12px 20px;
+    border-radius: 25px; font-weight: bold; transition: background-color 0.3s;
 }
 
-.btn-principal {
-    background-color: var(--color-acento);
-    color: var(--blanco);
-    width: 100%;
-    margin-top: 10px;
-}
+.btn-principal { background-color: var(--color-acento); color: var(--blanco); width: 100%; margin-top: 10px;}
+.btn-principal:hover { background-color: var(--color-acento-hover); }
 
-.btn-principal:hover {
-    background-color: var(--color-acento-hover);
-}
-
-.btn-secundario {
-    background-color: var(--fondo-tarjeta);
-    color: var(--color-texto);
-    border: 1px solid var(--color-borde);
-}
-
-.btn-secundario:hover {
-    background-color: var(--color-borde);
-}
+.btn-secundario { background-color: var(--fondo-tarjeta); color: var(--color-texto); border: 1px solid var(--color-borde); width: 100%; margin-top: 10px;}
+.btn-secundario:hover { background-color: var(--color-borde); }
 
 /* Tabla */
-.cabecera-tabla {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.contenedor-tabla {
-    overflow-x: auto;
-}
+.cabecera-tabla { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.cabecera-tabla button { width: auto; margin-top: 0; }
+.contenedor-tabla { overflow-x: auto; }
 
 table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius: 12px; /* Tabla redondeada */
-    overflow: hidden;
-    border: 1px solid var(--color-borde);
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    border-radius: 12px; overflow: hidden; border: 1px solid var(--color-borde);
 }
+thead { background-color: var(--fondo-tarjeta); }
+th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--color-borde); }
+th { font-weight: bold; font-size: 0.9rem; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background-color: var(--fondo-sitio); }
 
-thead {
-    background-color: var(--fondo-tarjeta);
-}
+.etiqueta-telemedicina { background-color: #D4EDDA; color: #155724; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; }
+.etiqueta-presencial { background-color: #E2E3E5; color: #383D41; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; }
 
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid var(--color-borde);
-}
+/* Botones Acción Tabla */
+.btn-acciones { display: flex; gap: 8px; }
+.btn-editar, .btn-borrar { padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; width: auto; margin:0; }
+.btn-editar { background-color: var(--color-editar); color: white; }
+.btn-borrar { background-color: var(--color-borrar); color: white; }
+.btn-borrar-fijo { background-color: var(--color-borrar); color: white; width: 100%; margin-top: 10px;}
 
-th {
-    font-weight: bold;
-    font-size: 0.9rem;
+/* Modales */
+.modal-overlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); z-index: 1000;
+    justify-content: center; align-items: center;
 }
-
-tbody tr:last-child td {
-    border-bottom: none;
-}
-
-tbody tr:hover {
-    background-color: var(--fondo-sitio);
-}
-
-.etiqueta-telemedicina {
-    background-color: #D4EDDA;
-    color: #155724;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-.etiqueta-presencial {
-    background-color: #E2E3E5;
-    color: #383D41;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
+.modal-contenido { width: 90%; max-width: 600px; margin-bottom: 0; }
