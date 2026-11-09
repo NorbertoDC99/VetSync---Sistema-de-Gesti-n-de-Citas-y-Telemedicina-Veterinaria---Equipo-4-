@@ -26,4 +26,4 @@ Este proyecto fue desarrollado para la materia **Optativa I (Fundamentos de IA e
 ## ⚙️ Cómo ejecutar el proyecto
 1. Clona este repositorio o descarga los archivos.
 2. Abre el archivo `index.html` en tu navegador web de preferencia. No es necesario instalar dependencias ni servidores locales.
-3. Registra citas desde el formulario y utiliza el botón "Exportar a Excel" para probar la funcionalidad de descarga.
+3. Registra citas desde el formulario y utiliza el botón "Exportar a Excel" para probar la funcionalidad de descarga
