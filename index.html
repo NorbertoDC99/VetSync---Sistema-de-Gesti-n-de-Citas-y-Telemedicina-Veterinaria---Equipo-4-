@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Citas y Telemedicina</title>
+    <!-- Hoja de estilos externa -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Librería para exportar a Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="contenedor-principal">
+        <header>
+            <h1>Clínica Veterinaria</h1>
+            <p>Gestión de Citas y Telemedicina</p>
+        </header>
+
+        <section class="tarjeta-formulario">
+            <h2>Registrar Nueva Cita</h2>
+            <form id="formulario-cita">
+                <div class="grupo-input">
+                    <label for="mascota">Nombre de la Mascota:</label>
+                    <input type="text" id="mascota" required placeholder="Ej. Firulais">
+                </div>
+                <div class="grupo-input">
+                    <label for="dueno">Nombre del Dueño:</label>
+                    <input type="text" id="dueno" required placeholder="Ej. Juan Pérez">
+                </div>
+                <div class="fila-inputs">
+                    <div class="grupo-input">
+                        <label for="fecha">Fecha:</label>
+                        <input type="date" id="fecha" required>
+                    </div>
+                    <div class="grupo-input">
+                        <label for="hora">Hora:</label>
+                        <input type="time" id="hora" required>
+                    </div>
+                </div>
+                <div class="grupo-input">
+                    <label for="motivo">Motivo / Síntomas:</label>
+                    <input type="text" id="motivo" required placeholder="Ej. Revisión general">
+                </div>
+                <div class="grupo-input checkbox-container">
+                    <input type="checkbox" id="telemedicina">
+                    <label for="telemedicina">¿Es consulta por Telemedicina?</label>
+                </div>
+                <button type="submit" class="btn-principal">Guardar Cita</button>
+            </form>
+        </section>
+
+        <section class="tarjeta-tabla">
+            <div class="cabecera-tabla">
+                <h2>Citas Programadas</h2>
+                <button id="btn-exportar" class="btn-secundario">Exportar a Excel</button>
+            </div>
+            <div class="contenedor-tabla">
+                <table id="tabla-citas">
+                    <thead>
+                        <tr>
+                            <th>Mascota</th>
+                            <th>Dueño</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Motivo</th>
+                            <th>Modalidad</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-tabla">
+                        <!-- Las citas se inyectarán aquí mediante JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Archivo JS externo -->
+    <script src="script.js"></script>
+</body>
+</html>
