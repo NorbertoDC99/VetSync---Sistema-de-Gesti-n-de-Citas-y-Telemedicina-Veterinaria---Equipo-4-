@@ -1,30 +1,27 @@
 let citas = [];
 
-// Elementos principales
 const formulario = document.getElementById('formulario-cita');
 const cuerpoTabla = document.getElementById('cuerpo-tabla');
 const btnExportar = document.getElementById('btn-exportar');
 
 // ---- FUNCIONES AUXILIARES DE FORMATEO ----
 
-// Auto-formato de fecha DD/MM/AAAA
-function formatearFecha(e) {
-    let valor = e.target.value.replace(/\D/g, ''); // Quita no-números
-    if (valor.length > 8) valor = valor.substring(0, 8);
-    
-    if (valor.length >= 5) {
-        e.target.value = `${valor.substring(0,2)}/${valor.substring(2,4)}/${valor.substring(4,8)}`;
-    } else if (valor.length >= 3) {
-        e.target.value = `${valor.substring(0,2)}/${valor.substring(2)}`;
-    } else {
-        e.target.value = valor;
-    }
-}
-document.getElementById('fecha').addEventListener('input', formatearFecha);
-document.getElementById('edit-fecha').addEventListener('input', formatearFecha);
+// 1. Auto-formato de Hora (Añade los ":" al escribir)
+function insertarDosPuntos(e) {
+    // Si presiona borrar, no forzamos el formato para dejarlo editar libremente
+    if (e.inputType === 'deleteContentBackward') return;
 
-// Lógica de conversión de hora (24h a 12h y autoselección AM/PM)
-function formatearHora(e, selectId) {
+    let val = e.target.value.replace(/\D/g, ''); // Deja solo números
+    if (val.length > 2) {
+        val = val.substring(0, 2) + ':' + val.substring(2, 4);
+    }
+    e.target.value = val;
+}
+document.getElementById('hora').addEventListener('input', insertarDosPuntos);
+document.getElementById('edit-hora').addEventListener('input', insertarDosPuntos);
+
+// 2. Lógica de conversión de hora (24h a 12h y autoselección AM/PM al salir del input)
+function formatearHoraBlur(e, selectId) {
     let val = e.target.value;
     let match = val.match(/^(\d{1,2})[:]?(\d{2})?$/);
     
@@ -43,13 +40,27 @@ function formatearHora(e, selectId) {
         e.target.value = `${h.toString().padStart(2, '0')}:${m}`;
     }
 }
-document.getElementById('hora').addEventListener('blur', (e) => formatearHora(e, 'ampm'));
-document.getElementById('edit-hora').addEventListener('blur', (e) => formatearHora(e, 'edit-ampm'));
+document.getElementById('hora').addEventListener('blur', (e) => formatearHoraBlur(e, 'ampm'));
+document.getElementById('edit-hora').addEventListener('blur', (e) => formatearHoraBlur(e, 'edit-ampm'));
+
+// 3. Convierte el input nativo YYYY-MM-DD a DD/MM/AAAA para la tabla
+function formatoFechaLatina(fechaNativa) {
+    if (!fechaNativa) return "";
+    const partes = fechaNativa.split('-'); // [YYYY, MM, DD]
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
+
+// 4. Convierte de vuelta DD/MM/AAAA a YYYY-MM-DD para cargar en el modal
+function formatoFechaNativa(fechaLatina) {
+    if (!fechaLatina) return "";
+    const partes = fechaLatina.split('/'); // [DD, MM, YYYY]
+    return `${partes[2]}-${partes[1]}-${partes[0]}`;
+}
 
 // Convierte fecha y hora en objeto Date de JS para poder ordenarlos
 function convertirADate(fechaStr, horaStr, ampm) {
     const partesFecha = fechaStr.split('/');
-    if(partesFecha.length !== 3) return new Date(9999, 11, 31); // Al final si hay error
+    if(partesFecha.length !== 3) return new Date(9999, 11, 31); 
     
     const dia = parseInt(partesFecha[0]);
     const mes = parseInt(partesFecha[1]) - 1;
@@ -65,18 +76,21 @@ function convertirADate(fechaStr, horaStr, ampm) {
     return new Date(ano, mes, dia, h, m);
 }
 
-
 // ---- LÓGICA PRINCIPAL (GUARDAR Y DIBUJAR) ----
 
 formulario.addEventListener('submit', function(e) {
     e.preventDefault();
+    
+    // Obtenemos la fecha del input (YYYY-MM-DD) y la convertimos al formato solicitado
+    const fechaInput = document.getElementById('fecha').value;
+    const fechaFormateada = formatoFechaLatina(fechaInput);
 
     const nuevaCita = {
-        id: Date.now().toString(), // ID único
+        id: Date.now().toString(),
         Mascota: document.getElementById('mascota').value,
         Dueño: document.getElementById('dueno').value,
         Teléfono: document.getElementById('telefono').value,
-        Fecha: document.getElementById('fecha').value,
+        Fecha: fechaFormateada,
         Hora: document.getElementById('hora').value,
         AMPM: document.getElementById('ampm').value,
         Motivo: document.getElementById('motivo').value,
@@ -91,14 +105,12 @@ formulario.addEventListener('submit', function(e) {
 function renderizarTabla() {
     cuerpoTabla.innerHTML = '';
 
-    // 1. Ordenar arreglo de menor fecha/hora a mayor
     citas.sort((a, b) => {
         let dateA = convertirADate(a.Fecha, a.Hora, a.AMPM);
         let dateB = convertirADate(b.Fecha, b.Hora, b.AMPM);
         return dateA - dateB; 
     });
 
-    // 2. Dibujar filas
     citas.forEach(cita => {
         const fila = document.createElement('tr');
         const claseEtiqueta = cita.Modalidad === 'Telemedicina' ? 'etiqueta-telemedicina' : 'etiqueta-presencial';
@@ -119,14 +131,12 @@ function renderizarTabla() {
     });
 }
 
-
 // ---- LÓGICA DE MODALES (EDITAR Y BORRAR) ----
 
 function cerrarModal(id) {
     document.getElementById(id).style.display = 'none';
 }
 
-// EDITAR
 function abrirEditar(id) {
     const cita = citas.find(c => c.id === id);
     if(cita) {
@@ -134,7 +144,10 @@ function abrirEditar(id) {
         document.getElementById('edit-mascota').value = cita.Mascota;
         document.getElementById('edit-dueno').value = cita.Dueño;
         document.getElementById('edit-telefono').value = cita.Teléfono;
-        document.getElementById('edit-fecha').value = cita.Fecha;
+        
+        // Convertimos la fecha guardada (DD/MM/AAAA) de vuelta a (YYYY-MM-DD) para el input date
+        document.getElementById('edit-fecha').value = formatoFechaNativa(cita.Fecha);
+        
         document.getElementById('edit-hora').value = cita.Hora;
         document.getElementById('edit-ampm').value = cita.AMPM;
         document.getElementById('edit-motivo').value = cita.Motivo;
@@ -150,12 +163,15 @@ document.getElementById('formulario-editar').addEventListener('submit', function
     const index = citas.findIndex(c => c.id === id);
     
     if(index !== -1) {
+        const fechaInput = document.getElementById('edit-fecha').value;
+        const fechaFormateada = formatoFechaLatina(fechaInput);
+
         citas[index] = {
             id: id,
             Mascota: document.getElementById('edit-mascota').value,
             Dueño: document.getElementById('edit-dueno').value,
             Teléfono: document.getElementById('edit-telefono').value,
-            Fecha: document.getElementById('edit-fecha').value,
+            Fecha: fechaFormateada,
             Hora: document.getElementById('edit-hora').value,
             AMPM: document.getElementById('edit-ampm').value,
             Motivo: document.getElementById('edit-motivo').value,
@@ -166,7 +182,6 @@ document.getElementById('formulario-editar').addEventListener('submit', function
     }
 });
 
-// BORRAR
 function abrirBorrar(id) {
     document.getElementById('delete-id').value = id;
     document.getElementById('modal-borrar').style.display = 'flex';
@@ -179,12 +194,10 @@ document.getElementById('btn-confirmar-borrar').addEventListener('click', functi
     cerrarModal('modal-borrar');
 });
 
-
 // ---- EXPORTAR EXCEL ----
 btnExportar.addEventListener('click', function() {
     if (citas.length === 0) return alert("No hay citas registradas para exportar.");
 
-    // Formatear la data antes de exportar para que sea legible en Excel
     const datosExportar = citas.map(c => ({
         Mascota: c.Mascota,
         Dueño: c.Dueño,
